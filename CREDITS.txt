@@ -1,0 +1,7 @@
+Got the Soldier and animation from:
+
+YUROV VIKTOR
+https://assetstore.unity.com/packages/3d/characters/humanoids/polite-soldier-29807
+
+Got the grass texture from:
+https://www.textures.com/download/grass0177/54772
