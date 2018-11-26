@@ -67,5 +67,6 @@ public class Actions : MonoBehaviour {
 	public void Sitting () {
 		animator.SetBool ("Squat", !animator.GetBool("Squat"));
 		animator.SetBool("Aiming", false);
+	    
 	}
 }
