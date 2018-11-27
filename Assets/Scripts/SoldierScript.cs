@@ -7,7 +7,6 @@ public class SoldierScript : MonoBehaviour {
 	static public SoldierScript SoldierS;
 	public float speed = 1;
 	
-
 	public float soldierForward = 0;
 	public float soldierRightForward = 45;
 	public float soldierRight = 90;
@@ -17,12 +16,23 @@ public class SoldierScript : MonoBehaviour {
 	public float soldierLeft = 270;
 	public float soldierLeftForward = 315;
 	public bool ignoreMovement;
+	public bool commenceProjectile;
 	public float speedDelayToRunAfterShoot = .9f;
 	public float speedDelayToRun = .7f;
 	public float timeToSwitchFromShootingToIdle = 1f;
+	public float timeToSwitchFromRunToShooting = .8f;
+	public float timeToSwitchFromIdleToShooting = .2f;
+	public float timeUntilShootCommencement;
+	public GameObject Bullet;
+	private GameObject BulletSpawnObject;
+	private Transform BulletSpawn;
+	public float bullet_power = 50;
+	public float lastShot;
+	public float delayBetweenShots = .4f;
+
 	
-	//public GameObject otherObject;
-	//Animator OtherAnimator;
+	GameObject otherObject;
+	Animator animator;
 
 	/*
 	 * Code to make soldier have a rifle
@@ -34,14 +44,16 @@ public class SoldierScript : MonoBehaviour {
 	{
 		SoldierS = this; //Set the Soldier Singleton
 		ignoreMovement = false;
-		//OtherAnimator = otherObject.GetComponent<Animator>();
-		
-	}
+		commenceProjectile = false;
+		animator = this.GetComponent<Animator>();
+		timeUntilShootCommencement = timeToSwitchFromRunToShooting;
 
-	// Update is called once per frame
+}
+
+
 	void Update () {
-		Debug.Log("Speed is: " + speed);
-		//if (this.OtherAnimator.GetCurrentAnimatorStateInfo(0).IsName("Aiming"))
+		//Debug.Log("timeToSwitch is : " + timeUntilShootCommencement);
+		//if (this.animator.GetCurrentAnimatorStateInfo(0).IsName("Aiming"))
 	//	{
 	//		Debug.Log("An animation is playing");
 	//	}
@@ -59,18 +71,73 @@ public class SoldierScript : MonoBehaviour {
 			ChangeToStopSpeedToWalk();
 			//ignore all movement
 			ignoreMovement = true;
+			//Start the shooting animation
 			Actions actions = GetComponent<Actions>();
 			actions.Attack();
+			//Read coroutine method
+			StartCoroutine(WaitForShootingAnimationToStartBeforeShootingBullets());
+
+			//If the animation playing is at idle, its takes less time for the
+			//character to start shooting, so set the time it takes bullets
+			//to start shooting appropriately
+			if (this.animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+			{
+				timeUntilShootCommencement = timeToSwitchFromIdleToShooting;
+
+			}else{ //Then he probably was running, so change the shooting commencment to wait longer
+				timeUntilShootCommencement = timeToSwitchFromRunToShooting;
+			}
+
+			//TODO: clean the logic of these if statements.
+			//If its too soon to shoot
+			if (Time.time - lastShot < delayBetweenShots)
+			{
+				//then dont shoot and return
+				return;
+			}
+			else
+			{//if its time to shoot the
+				//first check if im not moving and check if soldier has achieved a position to shoot.
+				if (ignoreMovement == true && commenceProjectile == true)
+				{
+					//Find where the outlet of the gun is
+					BulletSpawnObject = GameObject.FindGameObjectWithTag("BulletSpawner");
+					//Give me the transform of that position.
+					BulletSpawn = BulletSpawnObject.transform;
+					//Instantiate a buller clone
+					var aBullet = Instantiate(Bullet, BulletSpawn.transform.position, Quaternion.identity);
+					//get the rigibody of that bullet
+					Rigidbody BulletRigidbody = aBullet.GetComponent<Rigidbody>();
+					//shoot the bullet in the direction that the soldier is facing.
+					BulletRigidbody.velocity = this.transform.rotation * Vector3.forward * bullet_power;
+					//after a second, destroy that buller
+					Destroy(aBullet.gameObject, 1f);
+					//keep track of when a bullet was shot, to make sure a bullet doesnt shoot again too early.
+					lastShot = Time.time;
+				}
+			}
+			
+
+
+
+
 		}
+		//If player has let go of the shoot button.
 		if (Input.GetKeyUp(KeyCode.Mouse0))
 		{
-				StartCoroutine(ContinueRunningAfterShooting());
-			
+			//Make sure the shooting animation has stopped to start running
+			StartCoroutine(ContinueRunningAfterShooting());
+			//Let no more bullets fly.
+			commenceProjectile = false;
+
+			//TODO: Need to figure out how to give off last shot
+			//after shoot button released because animation shoots
+			//one more time after releasing the shoot button.
+
 		}
-		/******************************************************************/
-		//Ive been trying everything not move while shooting, still moves if I have movement keys pressed while continually shooting.
 
 
+		//If the mouse key is down, make sure there is no movement, only rotation.
 		if (!Input.GetKey(KeyCode.Mouse0) && ignoreMovement == false)
 		{
 
@@ -443,6 +510,17 @@ public class SoldierScript : MonoBehaviour {
 	{
 		yield return new WaitForSeconds(speedDelayToRun);
 		speed = 3;
+	}
+	//We need to wait a little longer before we upgrade the speed
+	//because the shoot animation takes a little longer to finish
+	IEnumerator WaitForShootingAnimationToStartBeforeShootingBullets()
+	{
+
+		yield return new WaitForSeconds(timeUntilShootCommencement);
+		if (Input.GetKey(KeyCode.Mouse0))
+		{
+			commenceProjectile = true;
+		}
 	}
 	//We need to wait a little longer before we upgrade the speed
 	//because the shoot animation takes a little longer to finish
