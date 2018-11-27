@@ -22,9 +22,9 @@ GameObject:
   - component: {fileID: 33107544318217894}
   - component: {fileID: 23890084992634672}
   - component: {fileID: 135823407888445418}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BulletSpawn
-  m_TagString: Untagged
+  m_TagString: BulletSpawner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 4474549019131794}
   - component: {fileID: 33991221707187216}
   - component: {fileID: 23806819232518046}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: AutomaticRifle 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -164,6 +164,11 @@ Prefab:
       propertyPath: m_TagString
       value: Soldier
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: de63ee434fe39914b8d2f5680c62d05f, type: 2}
+      propertyPath: arsenal.Array.data[2].rightGun
+      value: 
+      objectReference: {fileID: 1369437086897804, guid: ab5af7f0f97dd754bb83d59f9a750a24,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de63ee434fe39914b8d2f5680c62d05f, type: 2}
   m_IsPrefabAsset: 0
@@ -349,9 +354,17 @@ MonoBehaviour:
   soldierLeft: 270
   soldierLeftForward: 315
   ignoreMovement: 0
+  commenceProjectile: 0
   speedDelayToRunAfterShoot: 0.9
   speedDelayToRun: 0.7
   timeToSwitchFromShootingToIdle: 1
+  timeToSwitchFromRunToShooting: 0.8
+  timeToSwitchFromIdleToShooting: 0.2
+  timeUntilShootCommencement: 0
+  Bullet: {fileID: 1472518110665966, guid: badf38ac0d87e414fa3052688993eedb, type: 2}
+  bullet_power: 50
+  lastShot: 0
+  delayBetweenShots: 0.4
 --- !u!1 &1985506129
 GameObject:
   m_ObjectHideFlags: 0
@@ -439,3 +452,45 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!1001 &2043306796
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4377905544327486, guid: badf38ac0d87e414fa3052688993eedb, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -1.81
+      objectReference: {fileID: 0}
+    - target: {fileID: 4377905544327486, guid: badf38ac0d87e414fa3052688993eedb, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 1.71
+      objectReference: {fileID: 0}
+    - target: {fileID: 4377905544327486, guid: badf38ac0d87e414fa3052688993eedb, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4377905544327486, guid: badf38ac0d87e414fa3052688993eedb, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4377905544327486, guid: badf38ac0d87e414fa3052688993eedb, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4377905544327486, guid: badf38ac0d87e414fa3052688993eedb, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4377905544327486, guid: badf38ac0d87e414fa3052688993eedb, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4377905544327486, guid: badf38ac0d87e414fa3052688993eedb, type: 2}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: badf38ac0d87e414fa3052688993eedb, type: 2}
+  m_IsPrefabAsset: 0
